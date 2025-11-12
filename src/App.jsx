@@ -1,9 +1,13 @@
+import { BrowserRouter, Routes, Route} from 'react-router-dom'
 
 function App() {
   return (
-    <div className="bg-bg">
-      <h1></h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<h1>Bom dia</h1>}/>
+        <Route path='*' element={<h1>Error 404</h1>}/>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
