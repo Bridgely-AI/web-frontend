@@ -9,7 +9,7 @@
 
    --bg: 241, 241, 241;
    --bg-elevated: 255, 255, 255;
-   --text-primary: 17, 24, 39;
+   --text: 17, 24, 39;
    --text-secondary: 75, 85, 99;
 
    --success: 16, 185, 129;
@@ -25,7 +25,7 @@
 
    --bg: 13, 17, 23;
    --bg-elevated: 22, 27, 34;
-   --text-primary: 243, 244, 246;
+   --text: 243, 244, 246;
    --text-secondary: 156, 163, 175;
 
    --success: 16, 185, 129;
@@ -41,7 +41,7 @@
 
    --color-bg: rgba(var(--bg));
    --color-bg-elevated: rgba(var(--bg-elevated));
-   --color-text-primary: rgba(var(--text-primary));
+   --color-text: rgba(var(--text));
    --color-text-secondary: rgba(var(--text-secondary));
 
    --color-success: rgba(var(--success));
