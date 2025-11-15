@@ -16,22 +16,24 @@ const Navbar = ({ setNavButtons = true, currentPage = '' }) => {
          <div className="flex items-center">
             <Link to={'/'} className='flex items-center cursor-pointer'>
                <img src={BridgelyLogo} alt="Bridgely Logo" className="h-16 mr-2" />
-               <span className="text-text text-3xl font-bold">Bridgely</span>
+               {currentPage == 'home' || currentPage == 'login' || currentPage == 'register' ?
+                  <span className="text-text text-3xl font-bold">Bridgely</span>
+                  : ''}
             </Link>
             {isNavButtons ?
                <div className='flex items-center space-x-4 ml-10 cursor-pointer'>
-                  <Link 
-                     to={'/'} 
+                  <Link
+                     to={'/'}
                      className={`text-xl font-light ${activeNavButton == 'home' ? 'text-secondary' : 'text-text'}`}>
-                        Home
+                     Home
                   </Link>
-                  <Link 
-                     to={'/'} 
+                  <Link
+                     to={'/'}
                      className={`text-xl font-light ${activeNavButton == 'estudo' ? 'text-secondary' : 'text-text'}`}>
-                        Estudos
+                     Estudos
                   </Link>
                </div>
-            : ''}
+               : ''}
          </div>
          <div className="flex space-x-4">
             <button
@@ -53,9 +55,11 @@ const Navbar = ({ setNavButtons = true, currentPage = '' }) => {
             <button className="bg-secondary text-text text-xl font-bold py-2 px-6 rounded-full shadow-lg cursor-pointer transition duration-300 transform hover:scale-105">
                Login
             </button>
-            <button className="bg-bg text-text text-xl font-bold py-2 px-6 rounded-full hover:text-secondary cursor-pointer transition duration-300 transform hover:scale-105">
+            <Link
+               to={'/registro'}
+               className="bg-bg text-text text-xl font-bold py-2 px-6 rounded-full hover:text-secondary cursor-pointer transition duration-300 transform hover:scale-105">
                Registro
-            </button>
+            </Link>
          </div>
       </nav>
    )
