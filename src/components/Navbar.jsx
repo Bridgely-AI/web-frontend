@@ -52,9 +52,11 @@ const Navbar = ({ setNavButtons = true, currentPage = '' }) => {
                      className="h-full w-1/2 rounded-full bg-linear-to-r from-primary to-secondary" />
                </div>
             </button>
-            <button className="bg-secondary text-text text-xl font-bold py-2 px-6 rounded-full shadow-lg cursor-pointer transition duration-300 transform hover:scale-105">
+            <Link 
+               to={'/login'}
+               className="bg-secondary text-text text-xl font-bold py-2 px-6 rounded-full shadow-lg cursor-pointer transition duration-300 transform hover:scale-105">
                Login
-            </button>
+            </Link>
             <Link
                to={'/registro'}
                className="bg-bg text-text text-xl font-bold py-2 px-6 rounded-full hover:text-secondary cursor-pointer transition duration-300 transform hover:scale-105">
