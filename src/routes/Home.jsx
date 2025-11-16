@@ -9,7 +9,7 @@ const Home = () => {
 
    return (
       <div>
-         <Navbar currentPage='home' />
+         <Navbar currentPage='home' setNavButtons={false} />
          <div className='bg-linear-to-b from-bg/98 to-bg w-screen min-h-screen text-text flex flex-col items-center p-4 md:p-8'>
             <div className='w-md h-min bg-linear-to-tr from-primary/60 to-primary/30 flex flex-col items-center p-2 mt-15 rounded-2xl'>
                <h2 className='text-3xl font-extrabold'>Sua jornada personalizada</h2>
