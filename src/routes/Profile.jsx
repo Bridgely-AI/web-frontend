@@ -5,6 +5,7 @@ import useAuth from '../hooks/useAuth'
 import { API_URL } from '../config/apiConfig'
 
 import Navbar from '../components/Navbar'
+import MessageModal from '../components/MessageModal'
 
 import { BiLike, BiSolidLike } from "react-icons/bi"
 import { MdMessage } from "react-icons/md"
@@ -16,16 +17,17 @@ const Profile = () => {
 
    const [profileData, setProfileData] = useState(null)
    const [loading, setLoading] = useState(true)
+
    const [hasRecommended, setHasRecommended] = useState(false)
+   const [isMessageModalOpen, setIsMessageModalOpen] = useState(false)
+   const [messageForm, setMessageForm] = useState({ subject: '', content: '' })
+
    const [isEditing, setIsEditing] = useState(false)
    const [edits, setEdits] = useState({})
    const [error, setError] = useState(null)
 
    const isOwner = currentUser && (parseInt(profileId) == currentUser.id)
 
-   const handleProfileUpdate = (updatedUser) => {
-      setProfileData(updatedUser)
-   }
    const handleRecommended = async () => {
       try {
          const response = await axios.post(`${API_URL}/profile/recommend/${profileId}`, {}, {
@@ -33,7 +35,7 @@ const Profile = () => {
                Authorization: `Bearer ${localStorage.getItem('token')}`
             }
          })
-         
+
          const newCount = response.data.newCount
 
          setProfileData(prevData => ({
@@ -50,6 +52,85 @@ const Profile = () => {
          console.error('Erro ao recomendar perfil: ', error.response || error)
          alert('Erro ao processar a recomendação. Tente novamente mais tarde.')
       }
+   }
+
+   const handleStartEditing = () => {
+      setEdits({
+         name: profileData.name,
+         actualArea: profileData.actualArea,
+         description: profileData.description,
+         location: profileData.location,
+         hardSkills: profileData.hardSkills,
+         profilePicture: profileData.profilePicture,
+         softSkills: profileData.softSkills,
+         experiences: profileData.experiences,
+         hobbies: profileData.hobbies,
+         academicBackground: profileData.academicBackground
+      })
+      setIsEditing(true)
+   }
+   const handleInputChange = (e) => {
+      const { name, value } = e.target
+      setEdits(prev => ({ ...prev, [name]: value }))
+   }
+   const handleEditAction = async (action = 'save') => {
+      if (action == 'save') {
+         try {
+            const response = await axios.patch(`${API_URL}/profile/${profileId}`, edits, {
+               headers: {
+                  Authorization: `Bearer ${localStorage.getItem('token')}`
+               }
+            })
+
+            setProfileData(response.data.user)
+            setIsEditing(false)
+         }
+         catch (error) {
+            setError(error.response?.data?.message || "Erro ao salvar o perfil.")
+            console.error("Erro ao salvar:", error)
+         }
+      }
+      else if (action == 'cancel') {
+         setEdits({})
+         setIsEditing(false)
+      }
+   }
+
+   const handleSendMessage = async (e) => {
+      e.preventDefault()
+
+      if (!messageForm.subject.trim() || !messageForm.content.trim()) {
+         alert('Preencha o assunto e o conteudo da mensagem')
+         return
+      }
+
+      const payload = {
+         recipientId: profileId,
+         subject: messageForm.subject,
+         content: messageForm.content
+      }
+      const token = localStorage.getItem('token')
+
+      try {
+         const response = await axios.post(`${API_URL}/profile/message/${profileId}`, payload, {
+            headers: {
+               Authorization: `Bearer ${token}`
+            }
+         })
+
+         alert(response.data.message)
+         setIsMessageModalOpen(false)
+         setMessageForm({ subject: '', content: '' })
+      }
+      catch (error) {
+         console.error('Erro ao enviar a mensagem', error)
+         const errorMessage = error.response?.data?.message || 'Erro ao conectar com o servidor.'
+         alert(`Falha ao enviar: ${errorMessage}`)
+      }
+   }
+   const handleFormChange = (e) => {
+      const { name, value } = e.target
+      setMessageForm(prev => ({ ...prev, [name]: value }))
    }
 
    useEffect(() => {
@@ -156,10 +237,52 @@ const Profile = () => {
                </div>
 
                <div className=''>
-                  
-                  <p className='w-full text-text text-center text-5xl font-bold mt-20'>{name}</p>
-                  <p className='w-full text-center text-secondary text-xl mt-2'>{actualArea}</p>
-                  <p className='w-full text-text-secondary text-center text-lg px-40 mt-5'>{description}</p>
+                  {isEditing ?
+                     (
+                        <div className='w-full text-center space-y-6 mt-20'>
+                           <div className='w-full flex justify-center gap-4'>
+                              <button
+                                 onClick={() => handleEditAction('save')}
+                                 className='bg-secondary text-text text-xl font-bold py-2 px-6 rounded-full shadow-lg cursor-pointer transition duration-300 hover:scale-105'>
+                                 Salvar
+                              </button>
+                              <button
+                                 onClick={() => handleEditAction('cancel')}
+                                 className='text-text text-xl font-bold py-2 px-6 rounded-full border border-secondary shadow-lg cursor-pointer
+                                 transition duration-300 hover:scale-105'>
+                                 Cancelar
+                              </button>
+                           </div>
+                           <input
+                              name='name'
+                              value={edits.name}
+                              onChange={(e) => handleInputChange(e)}
+                              placeholder={'Insira seu nome completo'}
+                              className='w-7/10 text-text text-5xl font-bold px-4 py-2 border border-information rounded-2xl 
+                           outline-accent'/>
+                           <input
+                              name='actualArea'
+                              value={edits.actualArea}
+                              onChange={(e) => handleInputChange(e)}
+                              placeholder={'Insira sua área de profissão atual'}
+                              className='w-4/10 text-text text-xl px-4 py-2 border border-information rounded-2xl 
+                           outline-accent'/>
+                           <textarea
+                              name='description'
+                              value={edits.description}
+                              onChange={(e) => handleInputChange(e)}
+                              placeholder={'Insira uma descrição'}
+                              className='w-9/10 text-text text-lg px-6 py-2 border border-information rounded-2xl 
+                           outline-accent'></textarea>
+                        </div>
+                     ) :
+                     (
+                        <div className='w-full text-center mt-20'>
+                           <p className='text-text text-5xl font-bold'>{name}</p>
+                           <p className='text-secondary text-xl mt-2'>{actualArea}</p>
+                           <p className='text-text-secondary text-lg px-40 mt-5'>{description}</p>
+                        </div>
+                     )}
                </div>
 
                <div className='h-px bg-text-secondary/50 mt-10'></div>
@@ -268,10 +391,10 @@ const Profile = () => {
                               border-secondary border shadow-md shadow-secondary/20
                               transition duration-300
                               ${hasRecommended ? 'bg-secondary hover:bg-secondary/50' : 'bg-transparent hover:bg-secondary'}`}>
-                              {hasRecommended ? 
-                                 (<BiSolidLike />) : 
-                                 (<BiLike/>)
-                              }
+                           {hasRecommended ?
+                              (<BiSolidLike />) :
+                              (<BiLike />)
+                           }
                         </button>
                      )}
                   </div>
@@ -283,6 +406,7 @@ const Profile = () => {
                <div className="w-full space-y-4">
                   {!isOwner && (
                      <button
+                        onClick={() => setIsMessageModalOpen(true)}
                         className="w-full flex items-center justify-center gap-2 px-2 py-3 rounded-lg 
                                  bg-primary/10 border border-primary/30 text-sm font-bold 
                                  transition duration-300 hover:bg-primary/20 hover:border-primary/40">
@@ -292,7 +416,7 @@ const Profile = () => {
                   )}
                   {isOwner && (
                      <button
-                        onClick={() => setIsEditing(true)}
+                        onClick={(e) => handleStartEditing(e)}
                         className="w-full flex items-center justify-center gap-2 px-2 py-3 rounded-lg 
                                  bg-accent/10 border border-accent/30 text-sm font-bold 
                                  transition duration-300 hover:bg-accent/20 hover:border-accent/40">
@@ -303,8 +427,16 @@ const Profile = () => {
 
                </div>
             </aside>
-         </div>
-      </div>
+         </div >
+
+         <MessageModal
+            isMessageModalOpen={isMessageModalOpen}
+            profileData={profileData}
+            messageForm={messageForm}
+            handleSendMessage={handleSendMessage}
+            handleFormChange={handleFormChange}
+            setIsMessageModalOpen={setIsMessageModalOpen} />
+      </div >
    )
 }
 
