@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from "motion/react"
 import { Link, useNavigate } from 'react-router-dom'
 import useDarkMode from '../hooks/useDarkMode'
@@ -9,7 +9,7 @@ import { HiOutlineChevronDown } from 'react-icons/hi'
 
 import BridgelyLogo from '../assets/images/bridgelyLogo.png'
 
-const Navbar = ({ setNavButtons = true, currentPage = '' }) => {
+const Navbar = ({ setNavButtons = true, currentPage }) => {
    const { user, logout, isAuthenticated } = useAuth()
    const { isDarkMode, toggleDarkMode, disableDarkMode, enableDarkMode } = useDarkMode()
    const navigate = useNavigate()
@@ -17,6 +17,10 @@ const Navbar = ({ setNavButtons = true, currentPage = '' }) => {
    const [isMenuOpen, setIsMenuOpen] = useState(false)
    const [isNavButtons, setIsNavButtons] = useState(setNavButtons)
    const [activeNavButton, setActiveNavButton] = useState(currentPage)
+   
+   useEffect(() => {
+      setActiveNavButton(currentPage)
+   }, [currentPage])
 
    const handleLogout = () => {
       logout()
@@ -25,7 +29,7 @@ const Navbar = ({ setNavButtons = true, currentPage = '' }) => {
    }
 
    const authButtons = () => {
-      if (isAuthenticated == 1) {
+      if (isAuthenticated) {
          return (
             <div className='relative flex items-center'>
                <button
@@ -85,13 +89,18 @@ const Navbar = ({ setNavButtons = true, currentPage = '' }) => {
                <div className='flex items-center space-x-4 ml-10 cursor-pointer'>
                   <Link
                      to={'/'}
-                     className={`text-xl font-light ${activeNavButton == 'home' ? 'text-secondary' : 'text-text'}`}>
+                     className={`text-xl font-light transition-all hover:text-secondary/40 ${activeNavButton == 'home' ? 'text-secondary' : 'text-text'}`}>
                      Home
                   </Link>
                   <Link
-                     to={'/'}
-                     className={`text-xl font-light ${activeNavButton == 'estudo' ? 'text-secondary' : 'text-text'}`}>
+                     to={'/estudos'}
+                     className={`text-xl font-light transition-all hover:text-secondary/40 ${activeNavButton == 'study' ? 'text-secondary' : 'text-text'}`}>
                      Estudos
+                  </Link>
+                  <Link
+                     to={'/inbox'}
+                     className={`text-xl font-light transition-all hover:text-secondary/40 ${activeNavButton == 'inbox' ? 'text-secondary' : 'text-text'}`}>
+                     Mensagens
                   </Link>
                </div>
                : ''}

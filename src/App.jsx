@@ -3,6 +3,8 @@ import { AuthProvider } from './contexts/authContext'
 
 import LandingPage from './routes/LandingPage'
 import Home from './routes/Home'
+import Study from './routes/Study'
+import Inbox from './routes/Inbox'
 import Register from './routes/Register'
 import Login from './routes/Login'
 import Profile from './routes/Profile'
@@ -18,6 +20,8 @@ function App() {
           <Route path='/login' element={<Login />} />
 
           <Route path='/' element={<Home />} />
+          <Route path='/estudos' element={<Study />} />
+          <Route path='/inbox' element={<Inbox />} />
 
           <Route path='/profile/:id' element={<Profile />} />
 
