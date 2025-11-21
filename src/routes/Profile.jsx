@@ -6,10 +6,13 @@ import { API_URL } from '../config/apiConfig'
 
 import Navbar from '../components/Navbar'
 import MessageModal from '../components/MessageModal'
+import UserProfile from '../components/UserProfile'
+import CompanyProfile from '../components/CompanyProfile'
 
 import { BiLike, BiSolidLike } from "react-icons/bi"
 import { MdMessage } from "react-icons/md"
 import { FaEdit } from "react-icons/fa"
+import { FaPlus } from "react-icons/fa6"
 
 const Profile = () => {
    const { id: profileId } = useParams()
@@ -55,18 +58,33 @@ const Profile = () => {
    }
 
    const handleStartEditing = () => {
-      setEdits({
+      const baseEdits = {
          name: profileData.name,
-         actualArea: profileData.actualArea,
          description: profileData.description,
          location: profileData.location,
-         hardSkills: profileData.hardSkills,
          profilePicture: profileData.profilePicture,
-         softSkills: profileData.softSkills,
-         experiences: profileData.experiences,
-         hobbies: profileData.hobbies,
-         academicBackground: profileData.academicBackground
-      })
+      }
+      if (profileData.type === 'company') {
+         setEdits({
+            ...baseEdits,
+            area: profileData.area,
+            website: profileData.website,
+            jobs: profileData.jobs,
+            futureJobs: profileData.futureJobs
+         })
+      }
+      else {
+         setEdits({
+            ...baseEdits,
+            actualArea: profileData.actualArea,
+            hardSkills: profileData.hardSkills,
+            softSkills: profileData.softSkills,
+            experiences: profileData.experiences,
+            hobbies: profileData.hobbies,
+            academicBackground: profileData.academicBackground,
+            email: profileData.email,
+         })
+      }
       setIsEditing(true)
    }
    const handleInputChange = (e) => {
@@ -94,6 +112,47 @@ const Profile = () => {
          setEdits({})
          setIsEditing(false)
       }
+   }
+
+   const handleItemChange = (e, index, category) => {
+      const newArray = [...edits[category]]
+      newArray[index] = e.target.value
+      setEdits(prev => ({ ...prev, [category]: newArray }))
+   }
+   const addItem = (category) => {
+      setEdits(prev => ({
+         ...prev,
+         [category]: [...(prev[category] || []), '']
+      }))
+   }
+   const removeItem = (index, category) => {
+      setEdits(prev => ({
+         ...prev,
+         [category]: prev[category].filter((_, i) => i != index)
+      }))
+   }
+
+   const handleComplexItemChange = (e, index, category, field) => {
+      const newArray = [...edits[category]]
+      const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value
+      newArray[index] = { ...newArray[index], [field]: value }
+      setEdits(prev => ({ ...prev, [category]: newArray }))
+   }
+   const addComplexItem = (category) => {
+      const emptyItem = category === 'experiences'
+         ? { role: '', company: '', description: '', startDate: '', endDate: '', isCurrent: false }
+         : { course: '', degree: '', institution: '', status: '', startDate: '', endDate: '' }
+
+      setEdits(prev => ({
+         ...prev,
+         [category]: [...(prev[category] || []), emptyItem]
+      }))
+   }
+   const removeComplexItem = (index, category) => {
+      setEdits(prev => ({
+         ...prev,
+         [category]: prev[category].filter((_, i) => i !== index)
+      }))
    }
 
    const handleSendMessage = async (e) => {
@@ -249,7 +308,7 @@ const Profile = () => {
                               <button
                                  onClick={() => handleEditAction('cancel')}
                                  className='text-text text-xl font-bold py-2 px-6 rounded-full border border-secondary shadow-lg cursor-pointer
-                                 transition duration-300 hover:scale-105'>
+                                                transition duration-300 hover:scale-105'>
                                  Cancelar
                               </button>
                            </div>
@@ -259,21 +318,21 @@ const Profile = () => {
                               onChange={(e) => handleInputChange(e)}
                               placeholder={'Insira seu nome completo'}
                               className='w-7/10 text-text text-5xl font-bold px-4 py-2 border border-information rounded-2xl 
-                           outline-accent'/>
+                                          outline-accent'/>
                            <input
                               name='actualArea'
                               value={edits.actualArea}
                               onChange={(e) => handleInputChange(e)}
                               placeholder={'Insira sua área de profissão atual'}
                               className='w-4/10 text-text text-xl px-4 py-2 border border-information rounded-2xl 
-                           outline-accent'/>
+                                          outline-accent'/>
                            <textarea
                               name='description'
                               value={edits.description}
                               onChange={(e) => handleInputChange(e)}
                               placeholder={'Insira uma descrição'}
                               className='w-9/10 text-text text-lg px-6 py-2 border border-information rounded-2xl 
-                           outline-accent'></textarea>
+                                          outline-accent'></textarea>
                         </div>
                      ) :
                      (
@@ -287,93 +346,31 @@ const Profile = () => {
 
                <div className='h-px bg-text-secondary/50 mt-10'></div>
 
-               <div className='h-full flex space-x-1 mt-5 text-text'>
-                  <div className='w-3/10 mr-5 border-r border-text-secondary/50'>
-                     <p className='text-xl font-medium'>Habilidades Técnicas (hard skills)</p>
-                     <div className='flex flex-wrap gap-3 mt-4'>
-                        {hardSkills && hardSkills.length > 0 ? (hardSkills.map((skill, index) => (
-                           <span
-                              key={index}
-                              className='bg-secondary/10 text-secondary font-medium 
-                              px-3 py-1 rounded-full border border-secondary 
-                              transition duration-200 hover:bg-secondary/20'>
-                              {skill}
-                           </span>
-                        ))) : (
-                           <p className='text-text-secondary text-sm italic'>Nenhuma habilidade técnica listada.</p>
-                        )}
-                     </div>
-
-                     <p className='text-xl font-medium mt-10'>Habilidades Comportamentais (soft skills)</p>
-                     <div className='flex flex-wrap gap-3 mt-4'>
-                        {softSkills && softSkills.length > 0 ? (softSkills.map((skill, index) => (
-                           <span
-                              key={index}
-                              className='bg-primary/10 text-primary font-medium 
-                              px-3 py-1 rounded-full border border-primary 
-                              transition duration-200 hover:bg-primary/20'>
-                              {skill}
-                           </span>
-                        ))) : (
-                           <p className='text-text-secondary text-sm italic'>Nenhuma habilidade técnica listada.</p>
-                        )}
-                     </div>
-
-                     <p className='text-xl font-medium mt-10'>Hobbies</p>
-                     <div className='flex flex-wrap gap-2 mt-4'>
-                        {hobbies?.map((hobby, index) => (
-                           <span
-                              key={index}
-                              className='bg-accent/10 font-medium 
-                              px-3 py-1 rounded-full border border-accent
-                              transition duration-200 hover:bg-accent/20'>
-                              {hobby}
-                           </span>
-                        )) || <p className='text-text-secondary text-sm italic'>N/A</p>}
-                     </div>
-                  </div>
-
-                  <div className='w-6/10 ml-5 text-text'>
-                     <h2 className='text-3xl font-extrabold text-text-primary mb-3'>Experiências Profissionais</h2>
-                     <div className='space-y-6'>
-                        {experiences && experiences.length > 0 ? (
-                           experiences.map((exp, index) => (
-                              <div key={index} className='p-6 bg-bg-elevated rounded-xl shadow-lg border border-secondary/10'>
-                                 <h3 className='text-xl font-bold text-secondary'>{exp.role}</h3>
-                                 <p className='text-lg font-medium'>{exp.company}</p>
-
-                                 <p className='text-sm text-text-secondary mt-1'>
-                                    {formatDate(exp.startDate)} — {exp.isCurrent ? 'Atual' : formatDate(exp.endDate)}
-                                 </p>
-
-                                 <p className='text-text-primary/90 mt-3'>{exp.description}</p>
-                              </div>
-                           ))
-                        ) : (
-                           <p className='text-text-secondary italic'>Nenhuma experiência profissional registrada.</p>
-                        )}
-                     </div>
-
-                     <h2 className='text-3xl font-extrabold text-text-primary mt-10 mb-3'>Histórico Acadêmico</h2>
-                     <div className='space-y-6'>
-                        {academicBackground && academicBackground.length > 0 ? (
-                           academicBackground.map((edu, index) => (
-                              <div key={index} className='p-4 border-l-4 border-primary/70 bg-bg-elevated/50 rounded-lg'>
-                                 <h3 className='text-xl font-bold text-secondary'>{edu.course} ({edu.degree})</h3>
-                                 <p className='text-md'>{edu.institution}</p>
-
-                                 <p className='text-sm text-text-secondary'>
-                                    {formatDate(edu.startDate)} — {edu.status === 'Concluído' ? formatDate(edu.endDate) : 'Em andamento'}
-                                 </p>
-                                 <p className='text-sm text-information'>Status: {edu.status}</p>
-                              </div>
-                           ))
-                        ) : (
-                           <p className='text-text-secondary italic'>Nenhum histórico acadêmico registrado.</p>
-                        )}
-                     </div>
-                  </div>
-               </div>
+               {profileData.type === 'user' ? (
+                  <UserProfile
+                     isEditing={isEditing}
+                     edits={edits}
+                     profileData={profileData}
+                     handleItemChange={handleItemChange}
+                     addItem={addItem}
+                     removeItem={removeItem}
+                     handleComplexItemChange={handleComplexItemChange}
+                     addComplexItem={addComplexItem}
+                     removeComplexItem={removeComplexItem}
+                     formatDate={formatDate}
+                  />
+               ) : (
+                  <CompanyProfile
+                     isEditing={isEditing}
+                     edits={edits}
+                     profileData={profileData}
+                     handleComplexItemChange={handleComplexItemChange}
+                     addComplexItem={addComplexItem}
+                     removeComplexItem={removeComplexItem}
+                     formatDate={formatDate}
+                     handleInputChange={handleInputChange}
+                  />
+               )}
             </main>
             <aside
                className='fixed right-0 w-1/8 h-screen flex flex-col items-center space-y-6 

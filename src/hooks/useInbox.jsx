@@ -37,7 +37,7 @@ const useInbox = (isAuthenticated) => {
       fetchMessages()
    }, [isAuthenticated])
 
-   return ({ messages, loading, error })
+   return ({ messages, loading, error, setMessages })
 }
 
 export default useInbox

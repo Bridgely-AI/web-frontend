@@ -503,7 +503,7 @@ const RegisterForms = () => {
       )
    }
    function formCompany3() {
-      const isStepValid = uPassword.trim() !== '' && uConfirmPassword.trim() !== ''
+      const isStepValid = cPassword.trim() !== '' && cConfirmPassword.trim() !== ''
 
       return (
          <div className='w-full flex flex-col items-center space-y-5'>
