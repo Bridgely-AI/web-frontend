@@ -1,16 +1,46 @@
-# React + Vite
+# Bridgely - Frontend (Client)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Esta é a interface de usuário do projeto Bridgely, construída com React e Vite, utilizando Tailwind CSS v4 para estilização moderna e responsiva.
 
-Currently, two official plugins are available:
+## 👥 Integrantes do Grupo
+* **João Pedro Raimundo Marcilio** | RM 561603
+* **Lucas Clemente Zanella** | RM 563880
+* **Ben-Hur Iung de Lima Ferreira** | RM 561564
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ Tecnologias Utilizadas
+* React.js
+* Vite
+* Tailwind CSS v4
+* Axios (para requisições HTTP)
+* React Router DOM (para navegação)
+* React-Icons (para ícones)
+* Framer Motion (para animações)
 
-## React Compiler
+## 🚀 Instalação e Execução
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Siga os passos abaixo para rodar a interface:
 
-## Expanding the ESLint configuration
+### 1. Instalar Dependências
+Abra o terminal na pasta deste frontend e execute:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```
+npm install
+```
+### 2. Configuração da API
+Certifique-se de que o arquivo de configuração da API (geralmente em src/config/apiConfig.js) esteja apontando para a porta correta do seu backend.
+
+Exemplo:
+
+```
+export const API_URL = "http://localhost:5002"
+```
+### 3. Executar o Projeto
+Para iniciar o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+Após o comando, o terminal mostrará o link de acesso local (geralmente ```http://localhost:5173```).
+
+### Observação
+Para que todas as funcionalidades (Login, Feed, IA) funcionem, o Backend **deve estar rodando simultaneamente em outra aba do terminal**.
