@@ -15,8 +15,8 @@ const StudyForm = ({ onSubmit, isGenerating, defaultBudget = 500 }) => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="bg-bg-elevated max-w-2xl space-y-6 p-8 mx-auto rounded-xl shadow-xl">
-            <p className="text-2xl font-semibold text-text">Defina Seu Objetivo</p>            
+        <form onSubmit={handleSubmit} className="bg-bg-elevated max-w-2xl space-y-6 p-4 py-8 md:p-8 mx-auto rounded-xl shadow-xl">
+            <p className="text-2xl text-center md:text-left font-semibold text-text">Defina Seu Objetivo</p>            
             <div>
                 <label className="block text-text-secondary mb-2">Qual área ou tecnologia você quer aprender?</label>
                 <input

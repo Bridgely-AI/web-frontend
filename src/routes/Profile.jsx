@@ -285,17 +285,17 @@ const Profile = () => {
    }
 
    return (
-      <div className='bg-bg max-w-screen min-h-screen overflow-hidden'>
+      <div className='bg-bg w-full min-h-screen overflow-x-hidden'>
          <Navbar />
-         <div className='max-w-screen flex pt-20 overflow-hidden'>
-            <main className='w-7/8 pb-10 px-14'>
-               <div className='relative bg-linear-to-r from-primary/90 to-primary/50 w-full h-60 flex justify-center mt-10 rounded-3xl'>
-                  <div className='absolute bg-linear-to-t from-secondary to-accent p-1 rounded-full -bottom-15'>
-                     <img className='w-60 h-60 shadow-lg shadow-secondary/30 rounded-full' src={profilePicture} alt={name} />
+         <div className='w-full flex flex-col md:flex-row pt-20'>
+            <main className='w-full md:w-7/8 pb-10 px-4 md:px-14 order-2 md:order-1'>
+               <div className='relative bg-linear-to-r from-primary/90 to-primary/50 w-full h-60 flex justify-center md-4 md:mt-10 rounded-3xl'>
+                  <div className='absolute bg-linear-to-t from-secondary to-accent p-1 rounded-full -bottom-12 md:-bottom-15'>
+                     <img className='w-40 md:w-60 h-40 md:h-60 shadow-lg shadow-secondary/30 rounded-full' src={profilePicture} alt={name} />
                   </div>
                </div>
 
-               <div className=''>
+               <div className='mt-16 md:mt-20'>
                   {isEditing ?
                      (
                         <div className='w-full text-center space-y-6 mt-20'>
@@ -307,8 +307,7 @@ const Profile = () => {
                               </button>
                               <button
                                  onClick={() => handleEditAction('cancel')}
-                                 className='text-text text-xl font-bold py-2 px-6 rounded-full border border-secondary shadow-lg cursor-pointer
-                                                transition duration-300 hover:scale-105'>
+                                 className='text-text text-xl font-bold py-2 px-6 rounded-full border border-secondary shadow-lg cursor-pointer transition duration-300 hover:scale-105'>
                                  Cancelar
                               </button>
                            </div>
@@ -317,21 +316,21 @@ const Profile = () => {
                               value={edits.name}
                               onChange={(e) => handleInputChange(e)}
                               placeholder={'Insira seu nome completo'}
-                              className='w-7/10 text-text text-5xl font-bold px-4 py-2 border border-information rounded-2xl 
+                              className='w-full md:w-7/10 text-text text-5xl font-bold px-4 py-2 border border-information rounded-2xl 
                                           outline-accent'/>
                            <input
                               name='actualArea'
                               value={edits.actualArea}
                               onChange={(e) => handleInputChange(e)}
                               placeholder={'Insira sua área de profissão atual'}
-                              className='w-4/10 text-text text-xl px-4 py-2 border border-information rounded-2xl 
+                              className='w-full md:w-4/10 text-text text-xl px-4 py-2 border border-information rounded-2xl 
                                           outline-accent'/>
                            <textarea
                               name='description'
                               value={edits.description}
                               onChange={(e) => handleInputChange(e)}
                               placeholder={'Insira uma descrição'}
-                              className='w-9/10 text-text text-lg px-6 py-2 border border-information rounded-2xl 
+                              className='w-full md:w-9/10 text-text text-lg px-6 py-2 border border-information rounded-2xl 
                                           outline-accent'></textarea>
                         </div>
                      ) :
@@ -372,10 +371,9 @@ const Profile = () => {
                   />
                )}
             </main>
-            <aside
-               className='fixed right-0 w-1/8 h-screen flex flex-col items-center space-y-6 
-               text-text px-3 py-5 border-l-2 border-bg-elevated 
-               z-2'>
+            <aside className='w-full md:w-1/8 relative md:fixed  md:right-0 md:h-screen flex flex-col items-center gap-4 md:space-y-6 
+                  text-text px-3 py-5 border-l-2 border-bg-elevated 
+                  z-2'>
                <div className="w-full text-center pb-6 border-b border-text-secondary">
                   <div className='flex items-center justify-center space-x-2'>
                      <p className="text-4xl font-extrabold text-secondary">

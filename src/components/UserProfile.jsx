@@ -16,8 +16,8 @@ const UserProfile = ({
 
    return (
       <div>
-         <div className='h-full flex space-x-1 mt-5 text-text'>
-            <div className='w-3/10 mr-5 border-r border-text-secondary/50'>
+         <div className='h-full flex flex-col md:flex-row gap-8 md:gap-0 space-x-1 mt-5 text-text'>
+            <div className='w-full md:w-3/10 mr-5 pb-8 md:pb-0 md:border-r md:border-text-secondary/50'>
                <p className='text-xl font-medium'>Habilidades Técnicas (hard skills)</p>
                <div className='flex flex-wrap gap-3 mt-4'>
                   {isEditing ? (
@@ -152,13 +152,13 @@ const UserProfile = ({
                </div>
             </div>
 
-            <div className='w-6/10 ml-5 text-text'>
+            <div className='w-full md:w-6/10 md:ml-5 text-text'>
                <h2 className='text-3xl font-extrabold text-text-primary mb-3'>Experiências Profissionais</h2>
                <div className='space-y-6'>
                   {isEditing ? (
                      <>
                         {edits.experiences?.map((exp, index) => (
-                           <div key={index} className='p-6 bg-bg-elevated rounded-xl shadow-lg border border-secondary/30 relative group'>
+                           <div key={index} className='p-2 md:p-6 bg-bg-elevated rounded-xl shadow-lg border border-secondary/30 relative group'>
                               <button
                                  onClick={() => removeComplexItem(index, 'experiences')}
                                  className='absolute top-4 right-4 text-warning/70 font-bold text-sm border border-warning/30 px-2 py-1 rounded
@@ -166,7 +166,7 @@ const UserProfile = ({
                                  Remover
                               </button>
 
-                              <div className='grid grid-cols-2 gap-4 pt-4 mb-3'>
+                              <div className='grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 mb-3'>
                                  <div>
                                     <label className='text-xs text-text-secondary ml-1'>Cargo</label>
                                     <input

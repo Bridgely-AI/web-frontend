@@ -91,11 +91,17 @@ const PlanDisplay = ({ plan }) => {
   if (!plan) return null
 
   return (
-    <div className="bg-bg-elevated max-w-6xl p-10 mt-10 rounded-xl shadow-2xl border border-primary/20">
-      <h2 className="text-3xl md:text-4xl text-secondary font-extrabold mb-4">{plan.studyPlanTitle}</h2>
-      <p className="text-text-secondary mb-6">{plan.introduction}</p>
+    <div className="bg-bg-elevated w-full md:max-w-6xl px-2 md:px-10 py-10 mt-10 rounded-xl shadow-2xl border border-primary/20">
+      <div className="p-2 md:p-10 border-b border-text-secondary/10">
+        <h2 className="text-2xl md:text-4xl text-secondary font-extrabold mb-4 leading-tight">
+          {plan.studyPlanTitle}
+        </h2>
+        <p className="text-text-secondary text-sm md:text-base leading-relaxed">
+          {plan.introduction}
+        </p>
+      </div>
 
-      <div className="bg-bg flex flex-col py-4 mb-8 rounded-lg">
+      <div className="bg-bg/50 flex flex-col py-4 mb-8 rounded-lg">
         <div className='flex items-center justify-evenly'>
           <div className="text-center">
             <FaClock className="text-information mx-auto mb-1" />
@@ -117,11 +123,17 @@ const PlanDisplay = ({ plan }) => {
         )}
       </div>
 
-      <div className='pl-10 py-5 border-l-5 border-secondary rounded-sm'>
+      <div className='py-5 rounded-sm'>
         {plan.modules.map((module, moduleIndex) => (
-          <div key={moduleIndex} className="bg-primary/10 mb-10 p-6 border-l-4 border-primary rounded-lg shadow-md">
-            <h3 className="text-2xl font-bold text-secondary mb-3">{module.moduleName}</h3>
-            <p className="text-text-secondary mb-4">Foco: {module.focusSkills.join(', ')}</p>
+          <div 
+          key={moduleIndex} 
+          className="bg-primary/10 flex flex-col md:flex-row mb-10 p-3 py-6 md:p-6 border-l-4 border-primary rounded-lg shadow-md">
+            <div className="mb-6">
+              <h3 className="text-xl md:text-2xl font-bold text-text mb-2">{module.moduleName}</h3>
+              <p className="text-sm text-text-secondary">
+                <span className="text-secondary font-bold">Foco:</span> {module.focusSkills.join(', ')}
+              </p>
+            </div>
 
             <div className="space-y-4">
               {module.activities.map((activity, activityIndex) => (

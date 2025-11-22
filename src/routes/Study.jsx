@@ -76,8 +76,8 @@ const Study = () => {
     <div>
       <div className='bg-bg w-full min-h-screen flex justify-center'>
         <Navbar currentPage={'study'} />
-        <main className="pt-25">
-          <h1 className="text-4xl font-extrabold text-secondary mb-8 flex items-center gap-3 justify-center">
+        <main className="w-full max-w-6xl pt-28 px-2 pb-10">
+          <h1 className="text-2xl md:text-4xl text-center font-extrabold text-secondary mb-8 flex items-center gap-3 justify-center">
             Gerador de Plano de Estudos por IA
           </h1>
 
